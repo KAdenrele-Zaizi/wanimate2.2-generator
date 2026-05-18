@@ -44,14 +44,12 @@ while IFS= read -r prompt || [ -n "$prompt" ]; do
     echo ""
     echo "Generating video for: '$prompt'"
     
-    # Run the generation using Distributed PyTorch (Multi-GPU) FSDP + Ulysses
-    torchrun --nproc_per_node=2 generate.py \
+    # Run the generation using the corrected persistent checkpoint directory
+    python generate.py \
         --task ti2v-5B \
         --size 1280*704 \
         --ckpt_dir "$MODEL_DIR" \
-        --dit_fsdp \
-        --t5_fsdp \
-        --ulysses_size 2 \
+        --convert_model_dtype \
         --prompt "$prompt"
         
     # Find the newest .mp4 file in the current working folder
